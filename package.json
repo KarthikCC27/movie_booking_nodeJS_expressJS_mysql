@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jsdom": "^24.0.0",
+    "mysql": "^2.18.1",
+    "save": "^2.9.0"
+  }
+}
