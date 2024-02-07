@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Movie App</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <div class="back"><h1>Movie Ticket Booking</h1></div>
+    <form method="post">
+        
+      <label>Select a movie:</label>
+      <select id="movie_name">
+        <%for(let i in s){%>
+        <option><%=s[i]%></option>
+        <%}%>
+    </select>
+      <br />
+      <br />
+
+      <label>Number of tickets:</label>
+      <input type="number" id="number-of-tickets" />
+      <br />
+      <button type="submit">Book Tickets</button>
+    </form>
+  </body>
+
+  <script src="app.js"></script>
+</html>

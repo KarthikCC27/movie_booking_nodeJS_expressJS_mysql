@@ -1,47 +1,30 @@
-const http = require("http");
-const fs = require("fs");
-const mysql = require("mysql");
+const express = require("express");
+const path = require("path");
+const app = express();
+const connection = require("../movie_booking_nodeJS/db.js");
+const bodyParser = require('body-parser');
 
-const connection = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"K@rthik27122003",
-    database:"movies"
-});
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname)));
+app.set("view engine", "ejs");
 
-connection.connect(function(err){
-    if (err){
-        console.log("error: "+err);
-    }
-    else
-        console.log("Connection successful");
-});
-
-http.createServer((req, res) => {
+app.get("/", function (req, res) {
   const query = "select movieName from current_movies";
+  connection.query(query, (err, result) => {
+    let s=[]
+    for(let i=0;i<result.length;i++){
+        s.push(result[i].movieName);
+    }
+    res.render("index", { s: s });
+  });
+});
 
-  
-  if (req.url === "/") {
-    connection.query(query,(err,result)=>{
-        fs.readFile("./main.html", (err, html) => {
-            if (err) {
-              res.writeHead(500, { "Content-Type": "text/plain" });
-              res.end("Internal Server Error");
-            } else {
-      
-              const s = result.map((row)=>`<option>${row.movieName}</option>`)
-              console.log(s);
-              const updated_html = './main.html'.replace('<select id="movie_name"></select>',`<select id="movie_name">${s}hi</select>`)
-              res.writeHead(200, { "Content-Type": "text/html" });
-              res.end(html);
-            }
-          });
-    })
-    
-  } else {
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not Found");
-  }
-}).listen(3000, () => {
+app.post("/",(req,res)=>{
+    const data = req.params;
+    console.log(data);
+    res.end('booked');
+})
+
+app.listen(3000, () => {
   console.log("connected to port 3000");
 });
