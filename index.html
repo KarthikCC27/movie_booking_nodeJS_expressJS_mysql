@@ -1,20 +1,62 @@
 <html>
   <head>
     <title>Form</title>
-    <link rel="stylesheet" href="css/main.css"/>
   </head>
-  
+
+  <style>
+    .back {
+      background-image: url("bg.jpg");
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-container input[type="text"],
+    .form-container select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .form-container button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+
   <body>
     <div class="back"><h1>Movie Ticket Booking</h1></div>
-    <form id="myForm">
-      <button type="button" onclick="showMovies()">show movies</button
-      ><br /><br />
-      <label>enter no of tickets:</label>
-      <input type="text" id="no_of_tickets" /><br /><br />
-      <button type="button" onclick="bookTicket()">Submit</button>
-      <select id="movies"></select>
-    </form>
-
+    <div class="form-container">
+      <form id="myForm">
+        <br /><br />
+        <label>enter no of tickets:</label>
+        <input type="text" id="no_of_tickets" placeholder="No of Tickets" /><br /><br />
+        <label>enter moviename:</label>
+        <select id="movies"><option value="" disabled selected  >Select your option</option></select>
+        <button type="button" onclick="bookTicket()">Submit</button>
+        
+        <button type="button" onclick="showMovies()">show movies</button>
+      </form>
+    </div>
     <script>
       async function showMovies() {
         const xyz = document.getElementById("movies");
@@ -36,13 +78,13 @@
       async function bookTicket() {
         const no_of_tickets = document.getElementById("no_of_tickets").value;
         const sel = document.querySelector("#movies");
-        let optvalue = sel.value
-        let movieticket = {movie:optvalue,num : no_of_tickets};
+        let optvalue = sel.value;
+        let movieticket = { movie: optvalue, num: no_of_tickets };
         console.log(movieticket);
         try {
           const response = await fetch("/bookTicket", {
             method: "POST",
-            body: JSON.stringify({movieticket}),
+            body: JSON.stringify({ movieticket }),
             headers: { "Content-Type": "application/json" },
           });
           if (response.ok) {
