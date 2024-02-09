@@ -37,6 +37,10 @@
       cursor: pointer;
     }
 
+    #book:disabled{
+      background-color: #0056b3;
+    }
+
     .form-container button:hover {
       background-color: #0056b3;
     }
@@ -44,15 +48,15 @@
   </style>
 
   <body>
-    <div class="back"><h1>Movie Ticket Booking</h1></div>
+    <div><h1>Movie Ticket Booking</h1></div>
     <div class="form-container">
       <form id="myForm">
         <br /><br />
         <label>enter no of tickets:</label>
-        <input type="text" id="no_of_tickets" placeholder="No of Tickets" /><br /><br />
+        <input type="text" id="no_of_tickets" placeholder="No of Tickets" required /><br /><br />
         <label>enter moviename:</label>
         <select id="movies"><option value="" disabled selected  >Select your option</option></select>
-        <button type="button" onclick="bookTicket()">Submit</button>
+        <button type="button" id="book" onclick="bookTicket()" disabled>Submit</button>
         
         <button type="button" onclick="showMovies()">show movies</button>
       </form>
@@ -60,6 +64,7 @@
     <script>
       async function showMovies() {
         const xyz = document.getElementById("movies");
+        document.getElementById("book").disabled = false
         try {
           const response = await fetch("/showMovies", {
             method: "GET",
