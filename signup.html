@@ -1,20 +1,60 @@
 <html>
-    <head>
-        <title>
-            signup
-        </title>
-    </head>
-    <body>
-        <label>username:</label>
-        <input type="text"/>
-        <br><br>
-        <label>password</label>
-        <input type="password"/>
-        <br><br>
-        <label>re-enter password</label>
-        <input type="password"/>
-        <br><br>
-        <button type="submit">login</button>
-        <a href="/">already have an account</a>
-    </body>
+  <head>
+    <title>signup</title>
+  </head>
+  <body>
+    <form>
+      <label>username:</label>
+      <input type="text" id="username" required/>
+      <br /><br />
+      <label>password</label>
+      <input type="password" id="password" required/>
+      <br /><br />
+      <label>re-enter password</label>
+      <input type="password" id="repassword" required/>
+      <br /><br />
+      <button type="button" onclick="signinUser()">signup</button>
+      <a href="/">already have an account</a>
+      <p id="para"></p>
+    </form>
+  </body>
+  <script>
+    async function signinUser() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const repassword = document.getElementById("repassword").value;
+      const para = document.getElementById("para");
+      const signup_data = { user: username, pass: password };
+      
+      console.log(username+":"+password+":"+repassword)
+
+      if (password != repassword || password==""||username==""||repassword=="") {
+        para.innerHTML = "INVALID";
+      } else {
+        try {
+          let response = await fetch("/dosignup", {
+            method: "POST",
+            body: JSON.stringify({ signup_data }),
+            headers: { "Content-Type": "application/json" },
+          });
+          if (response.ok) {
+            const myresponse = await response.json();
+            if (myresponse.resp == "ok") {
+              window.location.href = "/";
+              console.log("sign in successful");
+              para.innerHTML = "sign in successful"
+            } else {
+              para.innerHTML = "User already exists";
+            }
+          } else {
+            console.log("Network Error");
+          }
+        } catch {
+          (error) => {
+            console.log("Error sending value", error);
+          };
+        }
+      }
+    }
+  </script>
 </html>

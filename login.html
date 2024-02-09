@@ -13,7 +13,7 @@
       <button type="button" onclick="loginUser()">login</button>
       <a href="signup">i'm a new user</a>
     </form>
-    <p id="para"></p>
+    
   </body>
 
   <script>
@@ -32,8 +32,8 @@
         const access = response.ok
         if (response.ok) {
             const myresponse = await response.json()
-            if(myresponse.resp="ok"){
-                // window.location.href="/index"
+            if(myresponse.resp=="ok"){
+                window.location.href=`/index?username=${username}`
                 console.log("access ok")
             }
             else{

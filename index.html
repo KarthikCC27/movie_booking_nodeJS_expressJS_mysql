@@ -84,7 +84,9 @@
         const no_of_tickets = document.getElementById("no_of_tickets").value;
         const sel = document.querySelector("#movies");
         let optvalue = sel.value;
-        let movieticket = { movie: optvalue, num: no_of_tickets };
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get("username");
+        let movieticket = { movie: optvalue, num: no_of_tickets ,uname:username};
         console.log(movieticket);
         try {
           const response = await fetch("/bookTicket", {
