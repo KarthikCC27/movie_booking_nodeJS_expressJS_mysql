@@ -2,21 +2,66 @@
   <head>
     <title>signup</title>
   </head>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      background-size: auto 120%;
+      background-image: url("back.jpg");
+    }
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+    #para{
+      color: rgb(0, 255, 34);
+      text-align: center;
+      font-size:xx-large;
+      font-weight: bolder;
+    }
+  </style>
   <body>
     <form>
-      <label>username:</label>
-      <input type="text" id="username" required/>
+      <label>Username:</label>
+      <input type="text" id="username" required />
       <br /><br />
-      <label>password</label>
-      <input type="password" id="password" required/>
+      <label>Password:</label>
+      <input type="password" id="password" required />
       <br /><br />
-      <label>re-enter password</label>
-      <input type="password" id="repassword" required/>
+      <label>Re-Enter Password:</label>
+      <input type="password" id="repassword" required />
       <br /><br />
-      <button type="button" onclick="signinUser()">signup</button>
-      <a href="/">already have an account</a>
-      <p id="para"></p>
+      <button type="button" onclick="signinUser()">Signup</button>
+      <a href="/">Already have an account?</a>
     </form>
+    <p id="para"></p>
   </body>
   <script>
     async function signinUser() {
@@ -25,11 +70,16 @@
       const repassword = document.getElementById("repassword").value;
       const para = document.getElementById("para");
       const signup_data = { user: username, pass: password };
-      
-      console.log(username+":"+password+":"+repassword)
 
-      if (password != repassword || password==""||username==""||repassword=="") {
-        para.innerHTML = "INVALID";
+      console.log(username + ":" + password + ":" + repassword);
+
+      if (
+        password != repassword ||
+        password == "" ||
+        username == "" ||
+        repassword == ""
+      ) {
+        para.innerHTML = "INVALID CREDENTIALS";
       } else {
         try {
           let response = await fetch("/dosignup", {
@@ -42,7 +92,7 @@
             if (myresponse.resp == "ok") {
               window.location.href = "/";
               console.log("sign in successful");
-              para.innerHTML = "sign in successful"
+              para.innerHTML = "sign in successful";
             } else {
               para.innerHTML = "User already exists";
             }

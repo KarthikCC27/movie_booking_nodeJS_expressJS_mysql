@@ -2,48 +2,91 @@
   <head>
     <title>login page</title>
   </head>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      background-size: auto 120%;
+      background-image: url("back.jpg");
+    }
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+    #para {
+      color: rgb(0, 255, 34);
+      text-align: center;
+      font-size: xx-large;
+      font-weight: bolder;
+    }
+  </style>
+
   <body>
     <form>
-      <label>username:</label>
-      <input type="text" id="username" required/>
+      <label>Username:</label>
+      <input type="text" id="username" required />
       <br /><br />
-      <label>password</label>
-      <input type="password" id="password"  required/>
+      <label>Password:</label>
+      <input type="password" id="password" required />
       <br /><br />
-      <button type="button" onclick="loginUser()">login</button>
-      <a href="signup">i'm a new user</a>
+      <button type="button" onclick="loginUser()">Login</button>
+      <a href="signup">I'm a New User</a>
     </form>
-    
+    <p id="para"></p>
   </body>
 
   <script>
     async function loginUser() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const para = document.getElementById('para')
+      const para = document.getElementById("para");
       let login_data = { user: username, pass: password };
-      console.log(login_data)
+      console.log(login_data);
       try {
         let response = await fetch("/login", {
           method: "POST",
           body: JSON.stringify({ login_data }),
           headers: { "Content-Type": "application/json" },
         });
-        const access = response.ok
+        const access = response.ok;
         if (response.ok) {
-            const myresponse = await response.json()
-            if(myresponse.resp=="ok"){
-                window.location.href=`/index?username=${username}`
-                console.log("access ok")
-            }
-            else{
-                para.innerHTML="Invalid credentials";
-            }  
+          const myresponse = await response.json();
+          if (myresponse.resp == "ok") {
+            window.location.href = `/index?username=${username}`;
+            console.log("access ok");
+          } else {
+            para.innerHTML = "INVALID CREDENTIALS";
+          }
+        } else {
+          console.log("Network Error");
         }
-        else{
-            console.log("Network Error")
-        }
-
       } catch {
         (error) => {
           console.log("Error sending value", error);
