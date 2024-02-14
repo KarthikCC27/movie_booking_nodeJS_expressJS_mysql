@@ -15,7 +15,7 @@
     }
 
     .form-container {
-      max-width: 500px;
+      max-width: 350px;
       margin: 0 auto;
       margin-top: 50px;
       padding: 30px;
@@ -23,9 +23,9 @@
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .form-container button {
+    .form-container button[id^="btn"] {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 10px;
       margin-right: 10px;
       background-color: #007bff;
       color: #fff;
@@ -35,14 +35,14 @@
     }
 
     input {
-      width: 100%;
+      width: 50%;
       padding: 10px;
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 3px;
     }
 
-    #book:disabled {
+    #btn:disabled {
       background-color: #0056b3;
     }
 
@@ -82,7 +82,7 @@
   </style>
 
   <body>
-    <div><h1>Movie Ticket Booking</h1></div>
+    <h1>Movie Ticket Booking</h1>
     <button id="logoutBtn"><a id="logout" href="/">Logout</a></button>
     <div class="form-container">
       <form id="myForm">
@@ -98,20 +98,25 @@
         <select id="movies">
           <option value="" disabled selected>Select movie</option></select
         ><br /><br />
-        <button type="button" id="book" onclick="bookTicket()" disabled>
-          Book Tickets
+        <button type="button" id="btn" onclick="bookTicket()" disabled>Book Tickets</button>
+        <button type="button" id="btn1" onclick="showMovies()">
+          Show Movies
         </button>
-
-        <button type="button" onclick="showMovies()">Show Movies</button>
-        <button type="button" onclick="listBookings()">My Bookings</button>
+        <button type="button" id="btn2" onclick="listBookings()">
+          My Bookings
+        </button>
+        <!-- <button type="button" id="btn3" onclick="deleteTicket()">
+          Delete Tickets
+        </button> -->
         <ul id="mybookings"></ul>
+        <ul id="delbookings"></ul>
       </form>
     </div>
     <p id="mypara"></p>
     <script>
       async function showMovies() {
         const xyz = document.getElementById("movies");
-        document.getElementById("book").disabled = false;
+        document.getElementById("btn").disabled = false;
         try {
           const response = await fetch("/showMovies", {
             method: "GET",
@@ -149,6 +154,7 @@
       async function bookTicket() {
         const no_of_tickets = document.getElementById("no_of_tickets").value;
         const para = document.getElementById("mypara");
+        if(no_of_tickets.length!=0){
         const sel = document.querySelector("#movies");
         let optvalue = sel.value;
         const urlParams = new URLSearchParams(window.location.search);
@@ -158,6 +164,7 @@
           num: no_of_tickets,
           uname: username,
         };
+
         try {
           const response = await fetch("/bookTicket", {
             method: "POST",
@@ -173,6 +180,7 @@
             if (myresponse.resp == "tickets_unavailable") {
               document.getElementById("myForm").reset();
               para.innerHTML = "Tickets Unavailable";
+              console.log("hi")
             }
           }
         } catch {
@@ -181,13 +189,36 @@
           };
         }
       }
+      else{
+
+        para.innerHTML = "Please enter the number of tickets"
+      } 
+    }
+
+      // async function deleteTicket() {
+      //   const xyz = document.getElementById("delbookings");
+      //   try {
+      //     const response = await fetch("/deleteBookings", {
+      //       method: "GET",
+      //       headers: { "Content-Type": "application/json" },
+      //     });
+      //     if (response.ok) {
+      //       const result = await response.json();
+      //       xyz.innerHTML = result;
+      //     }
+      //   } catch {
+      //     (error) => {
+      //       console.error("Error sending value:", error);
+      //     };
+      //   }
+      // }
+
       async function logout() {
         try {
           const response = await fetch("/logout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
           });
-          
         } catch {
           (error) => {
             console.error(error);
